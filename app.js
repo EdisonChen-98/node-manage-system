@@ -11,8 +11,8 @@ app.use(express.urlencoded({ extended: true })) // 解析 application/x-www-form
 
 
 //路由模块
-const authRouter = require('./router/auth')
-app.use('/auth',authRouter)
+const authRouter = require('./router/common')
+app.use('/common',authRouter)
 
 //启动服务
 app.listen(3007, () => {
