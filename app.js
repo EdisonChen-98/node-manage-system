@@ -5,19 +5,16 @@
 const express = require('express')
 const app = express()
 
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+//中间件
+app.use(express.json()) // 解析 application/json
+app.use(express.urlencoded({ extended: true })) // 解析 application/x-www-form-urlencoded
 
-app.post('/auth/login', function (req, res) {
-  console.log('login', req.body)
-  res.send({
-    status: 0,
-    data: {
-      username: req.body.username,
-      password: req.body.password
-    }
-  });
-});
+
+//路由模块
+const authRouter = require('./router/auth')
+app.use('/auth',authRouter)
+
+//启动服务
 app.listen(3007, () => {
   console.log('server running at http:127.0.0.1:3007');
 })
