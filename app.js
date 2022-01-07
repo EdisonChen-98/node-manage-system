@@ -8,6 +8,15 @@ const app = express()
 //中间件
 app.use(express.json()) // 解析 application/json
 app.use(express.urlencoded({ extended: true })) // 解析 application/x-www-form-urlencoded
+app.use((req,res,next)=>{
+  req.sendError=(error,status=1)=>{
+    res.send({
+      status,
+      message:error instanceof Error?error.message:error
+    })
+  }
+  next()
+})
 
 
 //路由模块
