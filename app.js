@@ -10,7 +10,7 @@ const app = express()
 app.use(express.json()) // 解析 application/json
 app.use(express.urlencoded({ extended: true })) // 解析 application/x-www-form-urlencoded
 app.use((req,res,next)=>{
-  res.sendError=(error,status=1)=>{
+  res.sendInfo=(error,status=1)=>{
     res.send({
       status,
       message:error instanceof Error?error.message:error
@@ -27,9 +27,9 @@ app.use('/common',commonRouter)
 //错误级别中间件
 app.use((error,req,res,next)=>{
   if(error instanceof joi.ValidationError){
-    return res.sendError(error)
+    return res.sendInfo(error)
   }
-  res.sendError(error)
+  res.sendInfo(error)
 })
 
 //启动服务
