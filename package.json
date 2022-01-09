@@ -10,10 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hapi/joi": "^17.1.0",
+    "@escook/express-joi": "^1.1.1",
     "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-joi": "^0.3.1",
+    "joi": "^17.5.0",
     "mysql": "^2.18.1"
   }
 }
