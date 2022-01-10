@@ -20,13 +20,15 @@ app.use((req, res, next) => {
   }
   next()
 })
-app.use(expressJWT({ secret: jwtSecretKey }).unless({ path: [/^\/common\//] })) //解析 token
+app.use(expressJWT({ secret: jwtSecretKey, algorithms: ['HS256'] }).unless({ path: [/^\/common\//] })) //解析 token
 
 
 
 //路由模块
 const commonRouter = require('./router/common')
+const authRouter = require('./router/auth')
 app.use('/common', commonRouter)
+app.use('/auth', authRouter)
 
 //错误级别中间件
 app.use((error, req, res, next) => {
@@ -34,7 +36,7 @@ app.use((error, req, res, next) => {
     return res.sendInfo(error)
   }
   if (error.name === 'UnauthorizedError') {
-    return res.sendInfo('身份认证失败')
+    return res.sendInfo('身份认证失败,请重新登录')
   }
   res.sendInfo(error)
 })

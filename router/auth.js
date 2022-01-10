@@ -4,15 +4,7 @@
  */
 const express = require('express')
 const router = express.Router()
-
-router.post('/login', (req, res) => {
-    res.send({
-        status: 0,
-        data: {
-            username: req.body.account,
-            password: req.body.password
-        }
-    });
-})
+const router_handler = require('../router_handler/auth')
+router.get('/getUserInfo', router_handler.getUserInfo)
 
 module.exports = router
