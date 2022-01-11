@@ -1,3 +1,4 @@
+//前端数据校验规则,生成对应的局部中间件
 const joi = require("joi")
 
 const username = joi.string().alphanum().min(1).max(10).required()

@@ -2,6 +2,7 @@
  * @Author: Edison Chen
  * @Date: 2022-01-10 09:21:30
  */
+//common不需要权限的接口路由
 const express = require('express')
 const router = express.Router()
 const expressJoi = require('@escook/express-joi')
