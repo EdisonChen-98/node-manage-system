@@ -23,7 +23,7 @@ exports.login = (req, res) => {
         }
         const tokenInfo = { ...result[0], password: '', user_pic: '' }
         const token = jwt.sign(tokenInfo, jwtSecretKey, {
-            expiresIn: '10000ms'
+            expiresIn: '3h'
         })
         res.send({
             status: 0,

@@ -6,5 +6,6 @@ const express = require('express')
 const router = express.Router()
 const router_handler = require('../router_handler/auth')
 router.get('/getUserInfo', router_handler.getUserInfo)
+router.post('/updateUserInfo', router_handler.updateUserInfo)
 
 module.exports = router
