@@ -1,4 +1,4 @@
-# node_server
+# node-manage-system
 
 ## 关于
 外卖商户后台管理平台的后端部分，基于express，配合前端项目食用：[前端项目地址](https://github.com/EdisonChen-98/vue-manage-system)
