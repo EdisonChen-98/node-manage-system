@@ -9,7 +9,7 @@ const { jwtSecretKey } = require('../config')
 
 exports.login = (req, res) => {
     let { username, password } = req.body
-    const selectSql = 'select * from users where username=?'
+    const selectSql = 'select id, username, password from users where username=?'
     db.query(selectSql, [username], (error, result) => {
         if (error) {
             return res.sendInfo(error)
@@ -21,7 +21,7 @@ exports.login = (req, res) => {
         if (!pwdIsRight) {
             return res.sendInfo('密码错误')
         }
-        const tokenInfo = { ...result[0], password: '', user_pic: '' }
+        const tokenInfo = { ...result[0], password: '' }
         const token = jwt.sign(tokenInfo, jwtSecretKey, {
             expiresIn: '3h'
         })
