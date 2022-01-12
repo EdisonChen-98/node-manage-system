@@ -11,6 +11,6 @@ const { update_userInfo_rule } = require('../rules/user')
 
 router.get('/getUserInfo', router_handler.getUserInfo)
 router.post('/updateUserInfo', expressJoi(update_userInfo_rule), router_handler.updateUserInfo)
-router.get('/getAllShop', router_handler.getAllShop)
+router.post('/getAllShop', router_handler.getAllShop)
 
 module.exports = router

@@ -1,3 +1,4 @@
 id,username,password,gender,email
 1,chentest,$2a$10$bP1oTGhaV91U3WhMuqL/Iu2TWdZJ9JTwM9p2mMf39oaybo7NYD88.,NULL,NULL
 2,test1,$2a$10$HoT3QaNVvUuPYgC8I2GZluULdHCXiBOZNP/ngGUKp71YMShm.d1xe,1,213123@1.com
+3,chen,$2a$10$SOrstd1fH4dK6u5ZVQa3Ge0TuiatueKsTL8SnRPyHmAZwhQpcWO1S,0,123@123.com
