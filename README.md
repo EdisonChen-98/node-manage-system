@@ -16,7 +16,7 @@
 ```
 确保安装了mysql并启动
 db/index.js修改本地数据库配置
-db/tableData文件夹下的cvs数据文件导入到mysql
+db/tableData文件夹下的cvs数据文件导入到mysql（mac会乱码要转一下）
 ```
 ```
 git clone https://github.com/EdisonChen-98/node-manage-system.git
