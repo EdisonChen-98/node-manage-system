@@ -48,7 +48,7 @@ exports.getAllShop = (req, res) => {
         if (listError) {
             return res.sendInfo(listError)
         }
-        const totalSql = 'select count(id) from shops'
+        const totalSql = 'select count(*) from shops'
         db.query(totalSql, (totalError, totalResult) => {
             if (totalError) {
                 return res.sendInfo(totalError)
@@ -57,9 +57,38 @@ exports.getAllShop = (req, res) => {
                 status: 0,
                 data: {
                     list: listResult,
-                    total: totalResult[0]['count(id)']
+                    total: totalResult[0]['count(*)']
                 }
             })
         })
     })
+}
+
+exports.getMyShop = (req, res) => {
+    const { id } = req.user
+    const { pageSize, pageNum } = req.body
+    const { offset, count } = req.makeOffset(pageSize, pageNum)
+    const sql = 'select id, shopName, category, score, userId from shops where userId =? limit ?, ?'
+    db.query(sql, [id, offset, count], (listError, listResult) => {
+        if (listError) {
+            return res.sendInfo(listError)
+        }
+        const totalSql = 'select count(*) from shops where userId =?'
+        db.query(totalSql, id, (totalError, totalResult) => {
+            if (totalError) {
+                return res.sendInfo(totalError)
+            }
+            return res.send({
+                status: 0,
+                data: {
+                    list: listResult,
+                    total: totalResult[0]['count(*)']
+                }
+            })
+        })
+    })
+}
+
+exports.addMyShop = (req, res) => {
+    res.sendInfo('addMyShop')
 }
