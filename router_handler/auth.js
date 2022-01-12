@@ -5,16 +5,16 @@
 const db = require('../db/index')
 
 exports.getUserInfo = (req, res) => {
-    const { user: { username } } = req
-    const selectSql = 'select * from users where username=?'
-    db.query(selectSql, [username], (error, result) => {
+    const { user: { id } } = req
+    const selectSql = 'select id, username, gender, email from users where id=?'
+    db.query(selectSql, [id], (error, result) => {
         if (error) {
             return res.sendInfo(error)
         }
         if (result.length != 1) {
             return res.sendInfo('系统错误')
         }
-        const data = { ...result[0], password: '' }
+        const data = { ...result[0] }
         return res.send({
             status: 0,
             data
@@ -23,10 +23,10 @@ exports.getUserInfo = (req, res) => {
 }
 
 exports.updateUserInfo = (req, res) => {
-    const { user: { username } } = req
-    const { body } = req
-    const sql = 'update users set? where username=?'
-    db.query(sql, [body, username], (error, result) => {
+    const { user: { id } } = req
+    const { body: { email, gender } } = req
+    const sql = 'update users set ? where id=?'
+    db.query(sql, [{ email, gender }, id], (error, result) => {
         if (error) {
             return res.sendInfo(error)
         }
@@ -36,6 +36,19 @@ exports.updateUserInfo = (req, res) => {
         return res.send({
             status: 0,
             message: '更新成功'
+        })
+    })
+}
+
+exports.getAllShop = (req, res) => {
+    const sql = 'select * from shops'
+    db.query(sql, (error, result) => {
+        if (error) {
+            return res.sendInfo(error)
+        }
+        return res.send({
+            status: 0,
+            data: result
         })
     })
 }

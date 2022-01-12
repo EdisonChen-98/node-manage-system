@@ -1,0 +1,7 @@
+id,shopName,category,menu,score,userId
+1,川味食族,中餐,NULL,4.8,1
+2,江小姐,中餐,NULL,4.9,1
+3,绝味炸鸡,西餐,NULL,4.6,1
+4,藤野食堂,日料,NULL,4.4,1
+5,老妈烤肉,韩料,NULL,4.6,2
+6,奶多多,甜品,NULL,4.8,1
