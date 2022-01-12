@@ -48,7 +48,10 @@ exports.getAllShop = (req, res) => {
         }
         return res.send({
             status: 0,
-            data: result
+            data: {
+                list: result,
+                total: result.length
+            }
         })
     })
 }
