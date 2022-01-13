@@ -90,5 +90,16 @@ exports.getMyShop = (req, res) => {
 }
 
 exports.addMyShop = (req, res) => {
-    res.sendInfo('addMyShop')
+    const { shopName, category } = req.body
+    const { id: userId } = req.user
+    const insertSql = 'insert into shops set ?'
+    db.query(insertSql, [{ shopName, category, userId }], (error, result) => {
+        if (error) {
+            return res.sendInfo(error)
+        }
+        if (result.affectedRows != 1) {
+            return res.sendInfo('添加店铺失败,请稍后再试')
+        }
+        return res.sendInfo('添加店铺成功', 0)
+    })
 }

@@ -8,12 +8,13 @@ const router = express.Router()
 const router_handler = require('../router_handler/auth')
 const expressJoi = require('@escook/express-joi')
 const { update_userInfo_rule } = require('../rules/user')
+const { add_myShop_rule } = require('../rules/shop')
 
 router.get('/getUserInfo', router_handler.getUserInfo)
 router.post('/updateUserInfo', expressJoi(update_userInfo_rule), router_handler.updateUserInfo)
 router.post('/getAllShop', router_handler.getAllShop)
 router.post('/getMyShop', router_handler.getMyShop)
-router.post('/addMyShop', router_handler.addMyShop)
+router.post('/addMyShop', expressJoi(add_myShop_rule), router_handler.addMyShop)
 
 
 module.exports = router
