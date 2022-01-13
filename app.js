@@ -6,6 +6,7 @@ const express = require('express')
 const joi = require('joi')
 const expressJWT = require('express-jwt')
 const { jwtSecretKey } = require('./config')
+const moment = require('moment')
 const app = express()
 
 //中间件
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
   }
   next()
 })
+app.use(expressJWT({ secret: jwtSecretKey, algorithms: ['HS256'] }).unless({ path: [/^\/common\//] })) //解析 token(必须放在sendinfo下面因为错误处理中间件会用到sendinfo方法)
 app.use((req, res, next) => {
   req.makeOffset = (pageSize, pageNum) => {
     const offset = (pageNum - 1) * pageSize
@@ -28,7 +30,10 @@ app.use((req, res, next) => {
   }
   next()
 })
-app.use(expressJWT({ secret: jwtSecretKey, algorithms: ['HS256'] }).unless({ path: [/^\/common\//] })) //解析 token
+app.use((req, res, next) => {
+  req.operationTime = moment().format('YYYY-MM-DD HH:mm:ss')
+  next()
+})
 
 
 
