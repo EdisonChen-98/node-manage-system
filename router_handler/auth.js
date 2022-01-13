@@ -66,9 +66,9 @@ exports.getAllShop = (req, res) => {
 
 exports.getMyShop = (req, res) => {
     const { id } = req.user
-    const { pageSize, pageNum } = req.body
+    const { pageSize, pageNum, keyword } = req.body
     const { offset, count } = req.makeOffset(pageSize, pageNum)
-    const sql = 'select id, shopName, category, score, userId from shops where userId =? limit ?, ?'
+    const sql = `select id, shopName, category, score, userId from shops where userId =? ${keyword ? `and shopName like '%${keyword}%' ` : ''}limit ?, ?`
     db.query(sql, [id, offset, count], (listError, listResult) => {
         if (listError) {
             return res.sendInfo(listError)
