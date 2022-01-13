@@ -41,17 +41,54 @@ exports.updateUserInfo = (req, res) => {
 }
 
 exports.getAllShop = (req, res) => {
-    const sql = 'select * from shops'
-    db.query(sql, (error, result) => {
-        if (error) {
-            return res.sendInfo(error)
+    const { pageSize, pageNum } = req.body
+    const { offset, count } = req.makeOffset(pageSize, pageNum)
+    const sql = 'select id, shopName, category, score from shops limit ?, ?'
+    db.query(sql, [offset, count], (listError, listResult) => {
+        if (listError) {
+            return res.sendInfo(listError)
         }
-        return res.send({
-            status: 0,
-            data: {
-                list: result,
-                total: result.length
+        const totalSql = 'select count(*) from shops'
+        db.query(totalSql, (totalError, totalResult) => {
+            if (totalError) {
+                return res.sendInfo(totalError)
             }
+            return res.send({
+                status: 0,
+                data: {
+                    list: listResult,
+                    total: totalResult[0]['count(*)']
+                }
+            })
         })
     })
+}
+
+exports.getMyShop = (req, res) => {
+    const { id } = req.user
+    const { pageSize, pageNum } = req.body
+    const { offset, count } = req.makeOffset(pageSize, pageNum)
+    const sql = 'select id, shopName, category, score, userId from shops where userId =? limit ?, ?'
+    db.query(sql, [id, offset, count], (listError, listResult) => {
+        if (listError) {
+            return res.sendInfo(listError)
+        }
+        const totalSql = 'select count(*) from shops where userId =?'
+        db.query(totalSql, id, (totalError, totalResult) => {
+            if (totalError) {
+                return res.sendInfo(totalError)
+            }
+            return res.send({
+                status: 0,
+                data: {
+                    list: listResult,
+                    total: totalResult[0]['count(*)']
+                }
+            })
+        })
+    })
+}
+
+exports.addMyShop = (req, res) => {
+    res.sendInfo('addMyShop')
 }

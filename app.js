@@ -20,6 +20,14 @@ app.use((req, res, next) => {
   }
   next()
 })
+app.use((req, res, next) => {
+  req.makeOffset = (pageSize, pageNum) => {
+    const offset = (pageNum - 1) * pageSize
+    const count = pageSize
+    return { offset, count }
+  }
+  next()
+})
 app.use(expressJWT({ secret: jwtSecretKey, algorithms: ['HS256'] }).unless({ path: [/^\/common\//] })) //解析 token
 
 
