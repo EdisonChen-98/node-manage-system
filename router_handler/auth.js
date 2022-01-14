@@ -40,7 +40,7 @@ exports.updateUserInfo = (req, res) => {
     })
 }
 
-exports.getAllShop = (req, res) => {
+exports.getAllShopList = (req, res) => {
     const { pageSize, pageNum } = req.body
     const { offset, count } = req.makeOffset(pageSize, pageNum)
     const sql = 'select id, shopName, category, score from shops limit ?, ?'
@@ -64,11 +64,11 @@ exports.getAllShop = (req, res) => {
     })
 }
 
-exports.getMyShop = (req, res) => {
+exports.getMyShopList = (req, res) => {
     const { id } = req.user
     const { pageSize, pageNum, keyword } = req.body
     const { offset, count } = req.makeOffset(pageSize, pageNum)
-    const sql = `select id, shopName, category, score, userId from shops where userId =? ${keyword ? `and shopName like '%${keyword}%' ` : ''}limit ?, ?`
+    const sql = `select id, shopName, category, score, userId from shops where userId =? ${keyword ? `and shopName like '%${keyword}%' ` : ''}order by operationTime desc limit ?, ?`
     db.query(sql, [id, offset, count], (listError, listResult) => {
         if (listError) {
             return res.sendInfo(listError)
@@ -90,10 +90,10 @@ exports.getMyShop = (req, res) => {
 }
 
 exports.addMyShop = (req, res) => {
-    const { shopName, category } = req.body
+    const { body: { shopName, category }, operationTime } = req
     const { id: userId } = req.user
     const insertSql = 'insert into shops set ?'
-    db.query(insertSql, [{ shopName, category, userId }], (error, result) => {
+    db.query(insertSql, [{ shopName, category, userId, operationTime }], (error, result) => {
         if (error) {
             return res.sendInfo(error)
         }
@@ -101,5 +101,50 @@ exports.addMyShop = (req, res) => {
             return res.sendInfo('添加店铺失败,请稍后再试')
         }
         return res.sendInfo('添加店铺成功', 0)
+    })
+}
+
+exports.deleteMyShop = (req, res) => {
+    const { body: { id } } = req
+    const deleteSql = 'delete from shops where id=?'
+    db.query(deleteSql, [id], (error, result) => {
+        if (error) {
+            return res.sendInfo(error)
+        }
+        if (result.affectedRows != 1) {
+            return res.sendInfo('删除店铺失败,请稍后再试')
+        }
+        return res.sendInfo('删除店铺成功', 0)
+    })
+}
+
+exports.getMyShopDetail = (req, res) => {
+    const { body: { id } } = req
+    const deleteSql = 'select shopName,category, userId from shops where id=?'
+    db.query(deleteSql, [id], (error, result) => {
+        if (error) {
+            return res.sendInfo(error)
+        }
+        if (result.length != 1) {
+            return res.sendInfo('系统错误')
+        }
+        return res.send({
+            status: 0,
+            data: result[0]
+        })
+    })
+}
+
+exports.editMyShop = (req, res) => {
+    const { body: { shopName, category, shopId }, operationTime } = req
+    const updateSql = 'update shops set ? where id=?'
+    db.query(updateSql, [{ shopName, category, operationTime }, shopId], (error, result) => {
+        if (error) {
+            return res.sendInfo(error)
+        }
+        if (result.affectedRows != 1) {
+            return res.sendInfo('编辑店铺失败,请稍后再试')
+        }
+        return res.sendInfo('编辑店铺成功', 0)
     })
 }
